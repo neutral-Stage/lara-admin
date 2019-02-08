@@ -13,6 +13,10 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     public function index()
     {
         return User::latest()->paginate(10);
@@ -41,7 +45,17 @@ class UserController extends Controller
             'password' => Hash::make($request['password']),
         ]);
     }
+    
+    public function profile()
+    {
+        return auth('api')->user();
+    }
 
+    public function updateProfile(Request $request)
+    {
+        $user = auth('api')->user();
+        return ['message' => 'Success'];
+    }
     /**
      * Display the specified resource.
      *
