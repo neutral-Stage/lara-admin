@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Support\Facades\Hash;
+
 class UserController extends Controller
 {
     /**
@@ -19,6 +20,7 @@ class UserController extends Controller
     }
     public function index()
     {
+
         return User::latest()->paginate(10);
     }
 
@@ -42,6 +44,7 @@ class UserController extends Controller
             'type' => $request['type'],
             'bio' => $request['bio'],
             'photo' => $request['photo'],
+            'phone' => $request['phone'],
             'password' => Hash::make($request['password']),
         ]);
     }

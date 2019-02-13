@@ -16,10 +16,34 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::middleware('auth:api')->get('/event', function (Request $request) {
+    return $request->event();
+});
+
+Route::middleware('auth:api')->get('/problem', function (Request $request) {
+    return $request->problem();
+});
+
+
+
 
 Route::apiResources([
     'user' => 'API\UserController'
 ]);
+
+
+Route::apiResources([
+    'event' => 'API\EventController'
+]);
+
+Route::apiResources([
+    'problem' => 'API\ProblemController'
+]);
+
+
+
+
+
 
 Route::get('profile', 'API\UserController@profile');
 Route::get('findUser', 'API\UserController@search');
