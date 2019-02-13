@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="row mt-5">
+        <div class="row mt-5" v-if="$gate.isAdminOrAuthor()">
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
@@ -18,15 +18,20 @@
                         <th>Name</th>
                         <th>Email</th>
                         <th>Type</th>
+                        <th>Phone</th>
                         <th>Registered At</th>
+                     
                         <th>Modify</th>
+                        
                   </tr>
                   <tr v-for="user in users.data" :key="user.id">
                     <td>{{user.id}}</td>
                     <td>{{user.name}}</td>
                     <td>{{user.email}}</td>
                     <td>{{user.type | upText}}</td>
+                    <td>{{user.phone }}</td>
                     <td>{{user.created_at | myDate}}</td>
+                 
                     <td> <a href="#" @click="editModal(user)">
                             <i class="fa fa-edit blue"></i>
                         </a>
@@ -34,6 +39,7 @@
                         <a href="#" @click="deleteUser(user.id)">
                             <i class="fa fa-trash red"></i>
                         </a></td>
+                    
                   </tr>
                   
                 </tbody></table>
@@ -42,6 +48,10 @@
             </div>
             <!-- /.card -->
           </div>
+        </div>
+
+         <div v-if="!$gate.isAdminOrAuthor()">
+            <not-found></not-found>
         </div>
         <!-- Modal -->
 <div class="modal fade" id="addNew" tabindex="-1" role="dialog" aria-labelledby="addNewTitle" aria-hidden="true">
@@ -74,6 +84,12 @@
                         placeholder="Short bio for user (Optional)"
                         class="form-control" :class="{ 'is-invalid': form.errors.has('bio') }"></textarea>
                         <has-error :form="form" field="bio"></has-error>
+                </div>
+                <div class="form-group">
+                        <textarea v-model="form.phone" name="phone" id="phone"
+                        placeholder="Short phone for user (Optional)"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('phone') }"></textarea>
+                        <has-error :form="form" field="phone"></has-error>
                 </div>
                 <div class="form-group">
                         <select name="type" v-model="form.type" id="type" class="form-control" :class="{ 'is-invalid': form.errors.has('type') }">
@@ -121,6 +137,7 @@
           password: '',
           type: '',
           bio: '',
+          phone: '',
           photo: ''
       })
     }
@@ -186,9 +203,9 @@
             },
 
           loadUsers(){
-                // if(this.$gate.isAdminOrAuthor()){
+                if(this.$gate.isAdminOrAuthor()){
                     axios.get("api/user").then(({ data }) => (this.users = data));
-                // }
+                }
             },
 
           createUser(){

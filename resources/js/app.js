@@ -12,7 +12,8 @@ import moment from 'moment';
 import Vue from 'vue';
 import { Form, HasError, AlertError } from 'vform'
 window.Form = Form;
-
+import Gate from "./Gate";
+Vue.prototype.$gate = new Gate(window.user);
 import Swal from 'sweetalert2'
 window.Swal = Swal;
 
@@ -42,6 +43,10 @@ Vue.component(
     'passport-personal-access-tokens',
     require('./components/passport/PersonalAccessTokens.vue').default
 );
+Vue.component(
+    'not-found',
+    require('./components/NotFound.vue')
+);
 
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
@@ -70,6 +75,10 @@ let routes = [{
         path: '/developer',
         component: require('./components/developer.vue').default
     }
+    // {
+    //     path: '*',
+    //     component: require('./components/NotFound.vue')
+    // }
 ]
 
 const router = new VueRouter({
