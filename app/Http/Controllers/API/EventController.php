@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Http\Controllers\API;
-use Auth;
+
+use App\Problem;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use App\Event;
+use DB;
 class EventController extends Controller
 {
 
@@ -21,7 +23,12 @@ class EventController extends Controller
      */
     public function index()
     {
-        return Event::with('user')->latest()->paginate(10);
+        // return $users = DB::table('events')
+        // ->leftjoin('users', 'users.id', '=', 'events.user_id')
+        // ->leftjoin('problems', 'problems.event_id', '=', 'events.id')
+        // ->select('users.id','users.name', 'problems.id as problem_id','problems.user_id as proUser_id','problems.problem', 'events.*')
+        // ->get();
+        return Event::with('user','problem')->latest()->paginate(10);
     }
 
     /**

@@ -85,12 +85,20 @@
                         class="form-control" :class="{ 'is-invalid': form.errors.has('bio') }"></textarea>
                         <has-error :form="form" field="bio"></has-error>
                 </div>
+
                 <div class="form-group">
                         <textarea v-model="form.phone" name="phone" id="phone"
                         placeholder="Short phone for user (Optional)"
                         class="form-control" :class="{ 'is-invalid': form.errors.has('phone') }"></textarea>
                         <has-error :form="form" field="phone"></has-error>
                 </div>
+                <div class="form-group">
+                                    <label for="photo" class="col-sm-2 control-label">Profile Photo</label>
+                                    <div class="col-sm-12">
+                                        <input type="file" @change="updateProfile" name="photo" class="form-input">
+                                    </div>
+
+                                </div>
                 <div class="form-group">
                         <select name="type" v-model="form.type" id="type" class="form-control" :class="{ 'is-invalid': form.errors.has('type') }">
                             <option value="">Select User Role</option>
@@ -222,7 +230,24 @@
                 })
                 .catch(()=>{
                 })
-          }
+          },
+          updateProfile(e){
+                let file = e.target.files[0];
+                let reader = new FileReader();
+                let limit = 1024 * 1024 * 2;
+                if(file['size'] > limit){
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'You are uploading a large file',
+                    })
+                    return false;
+                }
+                reader.onloadend = (file) => {
+                    this.form.photo = reader.result;
+                }
+                reader.readAsDataURL(file);
+            }
         },
 
         created() {

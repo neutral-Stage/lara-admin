@@ -1,3 +1,4 @@
+
 <template>
     <div class="container">
         <div class="row mt-5" v-if="$gate.isAdminOrAuthor()">
@@ -16,23 +17,32 @@
                   <tbody>
                     <tr>
                       <th>ID</th>
-                      <th>Name</th>
-                      <th>Email Address</th>
-                      <th>Type</th>
-                      <th>Participet</th>
+                      
+                      <th>Creator</th>
+                      <th>Expired Date</th>
+                      <th>About Event</th>
+                      <th>Participate</th>
                       <th>Modify</th>
                     </tr>
-                    <tr v-for="event in events.data" :key="event.id">
-                      <td>{{ event.id }}</td>
+                    <tr v-for="event in events.data" :key="event.id" >
+                      <td>{{ event.user.id }}</td>
+                     
+                      
                       <td>{{event.user.name }}</td>
-                      <td>{{ event.expired_date}}</td>
-                      <td>{{ event.comment}}</td>
 
-                      <td><a class="btn btn-success btn-round" href="#" @click="participet(event)">
+                      <td>{{ event.expired_date}}</td>
+                     
+                     
+                      <td v-for="problem in event.problem" :key="problem.id">{{ problem.problem}}</td>
+
+                      <td v-if="event.proUser_id==1">
+                        <button disabled="disabled">You have Joined</button>
+                      </td>
+                      <td v-else="">
+                      <a class="btn btn-success btn-round" href="#" @click="participet(event)">
                             <i class="fa fa-smile" style="font-size:35px;"></i>
                           </a>
                       </td>
-                      
                  
                       <td> <a href="#" @click="editModal(event)">
                             <i class="fa fa-edit blue"></i>
@@ -62,8 +72,8 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" v-show="!editmode" id="addNewLabel">Add New</h5>
-                  <h5 class="modal-title" v-show="editmode" id="addNewLabel">Update User's Info</h5>
+                  <h5 class="modal-title" v-show="!editmode" id="addNewLabel">Add New Event</h5>
+                  <h5 class="modal-title" v-show="editmode" id="addNewLabel">Update Created Event</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -99,7 +109,7 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" v-show="!editmode" id="problemLabel">Add New</h5>
-                  <h5 class="modal-title" v-show="editmode" id="problemLabel">Update User's Info</h5>
+                  <h5 class="modal-title" v-show="editmode" id="problemLabel">Say Your Problem Shamelessly !!!  </h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -107,7 +117,7 @@
                 <form @submit.prevent="editmode ? updateProblem() : createUser()">
                   <div class="modal-body">
                   <div class="form-group">
-                    <input v-model="form_2.problem" type="text" name="problem" 
+                    <input v-model="form_2.problem" type="text" name="problem" placeholder="Write Your Problem"
                         class="form-control" :class="{ 'is-invalid': form_2.errors.has('problem') }">
                     <has-error :form="form_2" field="problem"></has-error>
                   </div>
@@ -138,6 +148,7 @@
       editmode: false,
       events: {},
       problems:{},
+      users:{},
       // Create a new form instance
       form: new Form({
           id:'',
@@ -148,6 +159,17 @@
       form_2: new Form({
           id: '',
           problem : '',
+          
+          
+      }),
+      form_3: new Form({
+          id:'',
+          name : '',
+          email: '',
+          password: '',
+          type: '',
+          bio: '',
+          photo: ''
           
           
       })
@@ -194,9 +216,10 @@
                 .then(() => {
                     // success
                     $('#problem').modal('hide');
+                    Fire.$emit('AfterCreated');
                      Swal.fire(
-                        'Updated!',
-                        'Information has been updated.',
+                        'Congratulation!',
+                        'Your has been added.',
                         'success'
                      )
                         this.$Progress.finish();
@@ -243,6 +266,7 @@
                     axios.get("api/event").then(({ data }) => (this.events = data));
                 }
             },
+          
 
           createUser(){
             this.$Progress.start();
@@ -262,13 +286,17 @@
                 })
           }
         },
-
+        
         created() {
 
            this.loadUsers();
+           
            Fire.$on('AfterCreated',() => {
                this.loadUsers();
+               
            });
+           axios.get("api/profile")
+            .then(({ data }) => (this.users = data));
           // setInterval(() => this.loadUsers(), 3000);
         }
     }

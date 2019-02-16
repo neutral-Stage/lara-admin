@@ -1971,12 +1971,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       editmode: false,
       events: {},
       problems: {},
+      users: {},
       // Create a new form instance
       form: new Form({
         id: '',
@@ -1986,6 +1997,15 @@ __webpack_require__.r(__webpack_exports__);
       form_2: new Form({
         id: '',
         problem: ''
+      }),
+      form_3: new Form({
+        id: '',
+        name: '',
+        email: '',
+        password: '',
+        type: '',
+        bio: '',
+        photo: ''
       })
     };
   },
@@ -2027,7 +2047,8 @@ __webpack_require__.r(__webpack_exports__);
       this.form_2.post('api/problem' + this.form.id).then(function () {
         // success
         $('#problem').modal('hide');
-        Swal.fire('Updated!', 'Information has been updated.', 'success');
+        Fire.$emit('AfterCreated');
+        Swal.fire('Congratulation!', 'Your has been added.', 'success');
 
         _this2.$Progress.finish(); //Fire.$emit('AfterCreated');
 
@@ -2094,6 +2115,10 @@ __webpack_require__.r(__webpack_exports__);
     this.loadUsers();
     Fire.$on('AfterCreated', function () {
       _this6.loadUsers();
+    });
+    axios.get("api/profile").then(function (_ref2) {
+      var data = _ref2.data;
+      return _this6.users = data;
     }); // setInterval(() => this.loadUsers(), 3000);
   }
 });
@@ -3270,6 +3295,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3363,14 +3396,36 @@ __webpack_require__.r(__webpack_exports__);
 
         _this4.$Progress.finish();
       }).catch(function () {});
+    },
+    updateProfile: function updateProfile(e) {
+      var _this5 = this;
+
+      var file = e.target.files[0];
+      var reader = new FileReader();
+      var limit = 1024 * 1024 * 2;
+
+      if (file['size'] > limit) {
+        Swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: 'You are uploading a large file'
+        });
+        return false;
+      }
+
+      reader.onloadend = function (file) {
+        _this5.form.photo = reader.result;
+      };
+
+      reader.readAsDataURL(file);
     }
   },
   created: function created() {
-    var _this5 = this;
+    var _this6 = this;
 
     this.loadUsers();
     Fire.$on('AfterCreated', function () {
-      _this5.loadUsers();
+      _this6.loadUsers();
     }); // setInterval(() => this.loadUsers(), 3000);
   }
 });
@@ -7705,7 +7760,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.widget-user-header{\n    background-position: center center;\n    background-size: cover;\n    height: 250px !important;\n}\n.widget-user .card-footer{\n    padding: 0;\n}\n.widget-user .widget-user-image > img {\n    width: 170px;\n    height: auto;\n    border: 3px solid #ffffff;\n}\n\n", ""]);
+exports.push([module.i, "\n.widget-user-header{\r\n    background-position: center center;\r\n    background-size: cover;\r\n    height: 250px !important;\n}\n.widget-user .card-footer{\r\n    padding: 0;\n}\n.widget-user .widget-user-image > img {\r\n    width: 170px;\r\n    height: auto;\r\n    border: 3px solid #ffffff;\n}\r\n\r\n", ""]);
 
 // exports
 
@@ -60791,66 +60846,83 @@ var render = function() {
                       _vm._m(1),
                       _vm._v(" "),
                       _vm._l(_vm.events.data, function(event) {
-                        return _c("tr", { key: event.id }, [
-                          _c("td", [_vm._v(_vm._s(event.id))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(event.user.name))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(event.expired_date))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(event.comment))]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c(
-                              "a",
-                              {
-                                staticClass: "btn btn-success btn-round",
-                                attrs: { href: "#" },
-                                on: {
-                                  click: function($event) {
-                                    _vm.participet(event)
+                        return _c(
+                          "tr",
+                          { key: event.id },
+                          [
+                            _c("td", [_vm._v(_vm._s(event.user.id))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(event.user.name))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(event.expired_date))]),
+                            _vm._v(" "),
+                            _vm._l(event.problem, function(problem) {
+                              return _c("td", { key: problem.id }, [
+                                _vm._v(_vm._s(problem.problem))
+                              ])
+                            }),
+                            _vm._v(" "),
+                            event.proUser_id == 1
+                              ? _c("td", [
+                                  _c(
+                                    "button",
+                                    { attrs: { disabled: "disabled" } },
+                                    [_vm._v("You have Joined")]
+                                  )
+                                ])
+                              : _c("td", [
+                                  _c(
+                                    "a",
+                                    {
+                                      staticClass: "btn btn-success btn-round",
+                                      attrs: { href: "#" },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.participet(event)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("i", {
+                                        staticClass: "fa fa-smile",
+                                        staticStyle: { "font-size": "35px" }
+                                      })
+                                    ]
+                                  )
+                                ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "a",
+                                {
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.editModal(event)
+                                    }
                                   }
-                                }
-                              },
-                              [
-                                _c("i", {
-                                  staticClass: "fa fa-smile",
-                                  staticStyle: { "font-size": "35px" }
-                                })
-                              ]
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c(
-                              "a",
-                              {
-                                attrs: { href: "#" },
-                                on: {
-                                  click: function($event) {
-                                    _vm.editModal(event)
+                                },
+                                [_c("i", { staticClass: "fa fa-edit blue" })]
+                              ),
+                              _vm._v(
+                                "\n                    /\n                    "
+                              ),
+                              _c(
+                                "a",
+                                {
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.deleteUser(event.id)
+                                    }
                                   }
-                                }
-                              },
-                              [_c("i", { staticClass: "fa fa-edit blue" })]
-                            ),
-                            _vm._v(
-                              "\n                    /\n                    "
-                            ),
-                            _c(
-                              "a",
-                              {
-                                attrs: { href: "#" },
-                                on: {
-                                  click: function($event) {
-                                    _vm.deleteUser(event.id)
-                                  }
-                                }
-                              },
-                              [_c("i", { staticClass: "fa fa-trash red" })]
-                            )
-                          ])
-                        ])
+                                },
+                                [_c("i", { staticClass: "fa fa-trash red" })]
+                              )
+                            ])
+                          ],
+                          2
+                        )
                       })
                     ],
                     2
@@ -60900,7 +60972,7 @@ var render = function() {
                     staticClass: "modal-title",
                     attrs: { id: "addNewLabel" }
                   },
-                  [_vm._v("Add New")]
+                  [_vm._v("Add New Event")]
                 ),
                 _vm._v(" "),
                 _c(
@@ -60917,7 +60989,7 @@ var render = function() {
                     staticClass: "modal-title",
                     attrs: { id: "addNewLabel" }
                   },
-                  [_vm._v("Update User's Info")]
+                  [_vm._v("Update Created Event")]
                 ),
                 _vm._v(" "),
                 _vm._m(2)
@@ -61121,7 +61193,7 @@ var render = function() {
                     staticClass: "modal-title",
                     attrs: { id: "problemLabel" }
                   },
-                  [_vm._v("Update User's Info")]
+                  [_vm._v("Say Your Problem Shamelessly !!!  ")]
                 ),
                 _vm._v(" "),
                 _vm._m(3)
@@ -61156,7 +61228,11 @@ var render = function() {
                           class: {
                             "is-invalid": _vm.form_2.errors.has("problem")
                           },
-                          attrs: { type: "text", name: "problem" },
+                          attrs: {
+                            type: "text",
+                            name: "problem",
+                            placeholder: "Write Your Problem"
+                          },
                           domProps: { value: _vm.form_2.problem },
                           on: {
                             input: function($event) {
@@ -61285,13 +61361,13 @@ var staticRenderFns = [
     return _c("tr", [
       _c("th", [_vm._v("ID")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Name")]),
+      _c("th", [_vm._v("Creator")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Email Address")]),
+      _c("th", [_vm._v("Expired Date")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Type")]),
+      _c("th", [_vm._v("About Event")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Participet")]),
+      _c("th", [_vm._v("Participate")]),
       _vm._v(" "),
       _c("th", [_vm._v("Modify")])
     ])
@@ -63177,6 +63253,25 @@ var render = function() {
                       ],
                       1
                     ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-sm-2 control-label",
+                          attrs: { for: "photo" }
+                        },
+                        [_vm._v("Profile Photo")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-sm-12" }, [
+                        _c("input", {
+                          staticClass: "form-input",
+                          attrs: { type: "file", name: "photo" },
+                          on: { change: _vm.updateProfile }
+                        })
+                      ])
+                    ]),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -78225,8 +78320,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\laravue\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\laravue\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\lara-admin\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\lara-admin\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
