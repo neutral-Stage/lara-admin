@@ -35,6 +35,6 @@ class User extends Authenticatable
 
     public function problem()
     {
-        return $this->hasMany('App\Problem');
+        return $this->belongsToMany('App\Problem');
     }
 }

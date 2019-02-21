@@ -1981,6 +1981,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2010,6 +2029,17 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    IsDisable: function IsDisable(prouser) {
+      for (var i = 0; i < 12; i++) {
+        if (prouser[i].user_id == this.users.id) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+
+      console.log(values(prouser)); //  return false;
+    },
     updateUser: function updateUser() {
       var _this = this;
 
@@ -2119,7 +2149,7 @@ __webpack_require__.r(__webpack_exports__);
     axios.get("api/profile").then(function (_ref2) {
       var data = _ref2.data;
       return _this6.users = data;
-    }); // setInterval(() => this.loadUsers(), 3000);
+    }); // setInterval(() => this.loadUsers(), 3000);s
   }
 });
 
@@ -7760,7 +7790,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.widget-user-header{\r\n    background-position: center center;\r\n    background-size: cover;\r\n    height: 250px !important;\n}\n.widget-user .card-footer{\r\n    padding: 0;\n}\n.widget-user .widget-user-image > img {\r\n    width: 170px;\r\n    height: auto;\r\n    border: 3px solid #ffffff;\n}\r\n\r\n", ""]);
+exports.push([module.i, "\n.widget-user-header{\n    background-position: center center;\n    background-size: cover;\n    height: 250px !important;\n}\n.widget-user .card-footer{\n    padding: 0;\n}\n.widget-user .widget-user-image > img {\n    width: 170px;\n    height: auto;\n    border: 3px solid #ffffff;\n}\n\n", ""]);
 
 // exports
 
@@ -60846,36 +60876,26 @@ var render = function() {
                       _vm._m(1),
                       _vm._v(" "),
                       _vm._l(_vm.events.data, function(event) {
-                        return _c(
-                          "tr",
-                          { key: event.id },
-                          [
-                            _c("td", [_vm._v(_vm._s(event.user.id))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(event.user.name))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(event.expired_date))]),
-                            _vm._v(" "),
-                            _vm._l(event.problem, function(problem) {
-                              return _c("td", { key: problem.id }, [
-                                _vm._v(_vm._s(problem.problem))
-                              ])
-                            }),
-                            _vm._v(" "),
-                            event.proUser_id == 1
-                              ? _c("td", [
+                        return _c("tr", { key: event.id }, [
+                          _c("td", [_vm._v(_vm._s(event.user.id) + " ")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(event.user.name))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(event.id))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(event.problem[0].problem))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            event.problem.find(function(p) {
+                              return p.user_id == _vm.users.id
+                            })
+                              ? _c("div", [
                                   _c(
                                     "button",
-                                    { attrs: { disabled: "disabled" } },
-                                    [_vm._v("You have Joined")]
-                                  )
-                                ])
-                              : _c("td", [
-                                  _c(
-                                    "a",
                                     {
-                                      staticClass: "btn btn-success btn-round",
-                                      attrs: { href: "#" },
+                                      staticClass:
+                                        "btn btn-sm btn-outline-success",
+                                      attrs: { type: "button", disabled: true },
                                       on: {
                                         click: function($event) {
                                           _vm.participet(event)
@@ -60886,43 +60906,68 @@ var render = function() {
                                       _c("i", {
                                         staticClass: "fa fa-smile",
                                         staticStyle: { "font-size": "35px" }
-                                      })
+                                      }),
+                                      _vm._v("Already Joined")
                                     ]
                                   )
-                                ]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c(
-                                "a",
-                                {
-                                  attrs: { href: "#" },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.editModal(event)
-                                    }
+                                ])
+                              : _c("div", [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass:
+                                        "btn btn-sm btn-outline-success",
+                                      attrs: {
+                                        type: "button",
+                                        disabled: false
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.participet(event)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("i", {
+                                        staticClass: "fa fa-smile",
+                                        staticStyle: { "font-size": "35px" }
+                                      }),
+                                      _vm._v("Join")
+                                    ]
+                                  )
+                                ])
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.editModal(event)
                                   }
-                                },
-                                [_c("i", { staticClass: "fa fa-edit blue" })]
-                              ),
-                              _vm._v(
-                                "\n                    /\n                    "
-                              ),
-                              _c(
-                                "a",
-                                {
-                                  attrs: { href: "#" },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.deleteUser(event.id)
-                                    }
+                                }
+                              },
+                              [_c("i", { staticClass: "fa fa-edit blue" })]
+                            ),
+                            _vm._v(
+                              "\n                    /\n                    "
+                            ),
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.deleteUser(event.id)
                                   }
-                                },
-                                [_c("i", { staticClass: "fa fa-trash red" })]
-                              )
-                            ])
-                          ],
-                          2
-                        )
+                                }
+                              },
+                              [_c("i", { staticClass: "fa fa-trash red" })]
+                            )
+                          ])
+                        ])
                       })
                     ],
                     2
@@ -78320,8 +78365,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\lara-admin\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\lara-admin\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\laravue\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\laravue\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

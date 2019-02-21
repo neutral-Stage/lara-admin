@@ -13,38 +13,38 @@
               
               <!-- /.card-header -->
               <div class="card-body table-responsive p-0">
-                <table class="table table-hover">
-                  <tbody>
-                    <tr>
+                <table class="table table-hover" >
+                  <tbody >
+                    <tr >
                       <th>ID</th>
-                      
                       <th>Creator</th>
                       <th>Expired Date</th>
                       <th>About Event</th>
                       <th>Participate</th>
                       <th>Modify</th>
                     </tr>
-                    <tr v-for="event in events.data" :key="event.id" >
-                      <td>{{ event.user.id }}</td>
+                    <tr  v-for="event in events.data" :key="event.id">
+                      <td>{{ event.user.id}} </td>
                      
                       
                       <td>{{event.user.name }}</td>
 
-                      <td>{{ event.expired_date}}</td>
+                      <td >{{ event.id}}</td>
                      
                      
-                      <td v-for="problem in event.problem" :key="problem.id">{{ problem.problem}}</td>
+                      <td >{{ event.problem[0].problem}}</td>
 
-                      <td v-if="event.proUser_id==1">
-                        <button disabled="disabled">You have Joined</button>
+                     
+                      <td>
+                          <div v-if="event.problem.find(p => p.user_id == users.id)">
+                            <button class="btn btn-sm btn-outline-success" type="button" @click="participet(event)" :disabled="true"><i class="fa fa-smile" style="font-size:35px;"></i>Already Joined</button>
+                          </div>
+                          <div v-else>
+                            <button class="btn btn-sm btn-outline-success" type="button" @click="participet(event)" :disabled="false"><i class="fa fa-smile" style="font-size:35px;"></i>Join</button>
+                          </div>
                       </td>
-                      <td v-else="">
-                      <a class="btn btn-success btn-round" href="#" @click="participet(event)">
-                            <i class="fa fa-smile" style="font-size:35px;"></i>
-                          </a>
-                      </td>
-                 
                       <td> <a href="#" @click="editModal(event)">
+                           
                             <i class="fa fa-edit blue"></i>
                         </a>
                         /
@@ -56,6 +56,8 @@
                       </tr>
                   
                   </tbody>
+
+                  
                 </table>
               </div>
               <!-- /.card-body -->
@@ -138,13 +140,31 @@
               </div>
           </div>
     </div>
+
+                  
+                  
 </template>
+
+                            
+
+                             
+                            
+                            
+                          
+                      
+
+                      
+                      
+
+                     
+                 
 
 <script>
     export default {
 
         data () {
     return {
+      
       editmode: false,
       events: {},
       problems:{},
@@ -172,12 +192,27 @@
           photo: ''
           
           
-      })
+      }),
+      
     }
   },
         
 
         methods:{
+          IsDisable(prouser) {
+
+            for(let i=0;i<12;i++){
+              if(prouser[i].user_id==this.users.id){
+                return true;
+              }
+              else{
+                return false;
+              }
+            }
+            
+         console.log(values(prouser));
+      //  return false;
+        },
           updateUser(){
                 this.$Progress.start();
                 // console.log('Editing data');
@@ -287,6 +322,7 @@
           }
         },
         
+        
         created() {
 
            this.loadUsers();
@@ -297,7 +333,12 @@
            });
            axios.get("api/profile")
             .then(({ data }) => (this.users = data));
-          // setInterval(() => this.loadUsers(), 3000);
+          // setInterval(() => this.loadUsers(), 3000);s
         }
+        
+      
+  
     }
+    
+    
 </script>

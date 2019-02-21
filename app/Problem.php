@@ -18,8 +18,8 @@ class Problem extends Model
     {
         return $this->belongsToMany('App\Event');
     }
-    public function reaction()
-    {
-        return $this->hasMany('App\Reaction');
-    }
+    // public function reaction()
+    // {
+    //     return $this->hasMany('App\Reaction');
+    // }
 }

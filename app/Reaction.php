@@ -18,10 +18,10 @@ class Reaction extends Model
 
     public function problem()
     {
-        return $this->belongsTo('App\Problem');
+        return $this->belongsToMany('App\Problem');
     }
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsToMany('App\User');
     }
 }
