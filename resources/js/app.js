@@ -19,6 +19,9 @@ window.Swal = Swal;
 
 window.Fire = new Vue();
 
+import Vuex from 'vuex'
+
+Vue.use(Vuex)
 
 const Toast = Swal.mixin({
         toast: true,

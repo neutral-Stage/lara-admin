@@ -21,6 +21,7 @@
                       <th>Expired Date</th>
                       <th>About Event</th>
                       <th>Participate</th>
+                      <th>View Event</th>
                       <th>Modify</th>
                     </tr>
                     <tr  v-for="event in events.data" :key="event.id">
@@ -29,12 +30,11 @@
                       
                       <td>{{event.user.name }}</td>
 
-                      <td >{{ event.id}}</td>
+                      <td >{{ event.expired_date}}</td>
                      
                      
-                      <td >{{ event.problem[0].problem}}</td>
+                      <td >{{ event.comment}}</td>
 
-                     
                       <td>
                           <div v-if="event.problem.find(p => p.user_id == users.id)">
                             <button class="btn btn-sm btn-outline-success" type="button" @click="participet(event)" :disabled="true"><i class="fa fa-smile" style="font-size:35px;"></i>Already Joined</button>
@@ -43,6 +43,9 @@
                             <button class="btn btn-sm btn-outline-success" type="button" @click="participet(event)" :disabled="false"><i class="fa fa-smile" style="font-size:35px;"></i>Join</button>
                           </div>
                       </td>
+
+                      <td ><button class="btn btn-sm btn-outline-success" type="button" @click="viewEvent(event)" ><i class="fa fa-fa fa-desktop" style="font-size:35px;"></i></button></td>
+
                       <td> <a href="#" @click="editModal(event)">
                            
                             <i class="fa fa-edit blue"></i>
@@ -136,6 +139,33 @@
                     <button v-show="!editmode" type="submit" class="btn btn-primary">Create</button>
                   </div>
                 </form>
+                </div>
+              </div>
+          </div>
+
+          //View_Event
+
+          <div class="modal fade" id="viewevent" tabindex="-1" role="dialog" aria-labelledby="vieweventTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="vieweventLabel">Add New</h5>
+                  
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                
+                
+
+
+
+                
+                  <div class="modal-footer">
+                    <button type="button" class="btn  btn-danger" data-dismiss="modal">Close</button>
+                    
+                  </div>
+               
                 </div>
               </div>
           </div>
@@ -243,6 +273,12 @@
                 this.form.reset();
                 $('#problem').modal('show');
                 this.form_2.fill(event);
+            },
+
+           viewEvent(event){
+                
+                $('#viewevent').modal('show');
+                
             },
             updateProblem(){
                 this.$Progress.start();
