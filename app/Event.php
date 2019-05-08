@@ -16,6 +16,6 @@ class Event extends Model
     }
     public function problem()
     {
-        return $this->hasMany('App\Problem');
+        return $this->hasMany('App\Problem','event_id');
     }
 }

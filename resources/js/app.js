@@ -77,6 +77,10 @@ let routes = [{
     {
         path: '/developer',
         component: require('./components/developer.vue').default
+    },
+    {
+        path: '/eventviewer',
+        component: require('./components/eventviewer.vue').default
     }
     // {
     //     path: '*',

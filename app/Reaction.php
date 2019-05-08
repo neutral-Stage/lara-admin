@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Reaction extends Model
 {
     protected $fillable = [
-        'user_id', 'problem_id'
+        'user_id', 'problem_id','event_id'
     ];
 
     /**
@@ -18,10 +18,10 @@ class Reaction extends Model
 
     public function problem()
     {
-        return $this->belongsToMany('App\Problem');
+        return $this->belongsTo('App\Problem','problem_id');
     }
     public function user()
     {
-        return $this->belongsToMany('App\User');
+        return $this->belongsTo('App\User','user_id');
     }
 }

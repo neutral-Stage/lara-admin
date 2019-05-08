@@ -6,11 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title>AdminLTE 3 | Starter</title>
+  <title>Helping hand</title>
 <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
   <!-- Font Awesome Icons -->
 <link rel="stylesheet" href="/css/app.css">
+<link rel="stylesheet" href="{{ asset('/') }}css/all.min.css">
+<link rel="stylesheet" href="{{ asset('/') }}css/animate.css">
 
 </head>
 <body class="hold-transition sidebar-mini">
@@ -37,8 +39,6 @@
         </div>
       </div>
     </form>
-
- 
   </nav>
   <!-- /.navbar -->
 
@@ -74,8 +74,7 @@
                 <router-link to="/dashboard" class="nav-link">
                 <i class="nav-icon fas fa-tachometer-alt blue"></i>
                 <p>
-                    Dashboard
-                    
+                  Dashboard
                 </p>
                 </router-link>
             </li>
@@ -83,8 +82,7 @@
                 <router-link to="/profile" class="nav-link">
                 <i class="nav-icon fas fa-user cyan"></i>
                 <p>
-                    Profile
-                    
+                  Profile
                 </p>
                 </router-link>
             </li>
@@ -124,21 +122,39 @@
             @endcan
 
             <li class="nav-item">
-               
-                  <a class="nav-link" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        <i class="nav-icon fas fa-power-off red"></i>
-                                        <p>
-                                              {{ __('Logout') }}
-                                        </p>
-                                        
-                                        
-                  </a>
-                  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                  </form>
-                </li>
+              <a class="nav-link" href="{{ route('logout') }}"
+               onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                <i class="nav-icon fas fa-power-off red"></i>
+                <p>
+                  {{ __('Logout') }}
+                </p>
+                                    
+              </a>
+              <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+              </form>
+            </li>
+            
+            <li class="nav-item">
+                <a href="{{ route('admin.events') }}" class="nav-link">
+                <i class="fas fa-bars nav-icon purple"></i>
+                <p>Events</p>
+                </a>
+            </li>
+          <hr>
+            <li class="nav-item">
+                <a href="{{ route('admin.reaction.help') }}" class="nav-link">
+                <i class="fas fa-people-carry fa-2x"></i>
+                <p>I wanna help</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('admin.reaction.gethelp') }}" class="nav-link">
+                <i class="fas fa-walking fa-2x green"></i>
+                <p>Wanna help me</p>
+                </a>
+            </li>
+                
             </ul>
       </nav>
       <!-- /.sidebar-menu -->
@@ -152,9 +168,15 @@
       <div class="container-fluid">
         <router-view></router-view>
         <vue-progress-bar></vue-progress-bar>
+        @yield('contents')
       </div>
     </div>
   </div>
+
+<div class="content-wrapper" >
+
+</div>
+
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
@@ -179,5 +201,7 @@
 </script>
 @endauth
 <script src="/js/app.js"></script>
+<script src="{{ asset('/') }}js/WOW.js"></script>
+@yield('script')
 </body>
 </html>

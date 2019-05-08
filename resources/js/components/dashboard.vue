@@ -44,7 +44,7 @@
                           </div>
                       </td>
 
-                      <td ><button class="btn btn-sm btn-outline-success" type="button" @click="viewEvent(event)" ><i class="fa fa-fa fa-desktop" style="font-size:35px;"></i></button></td>
+                      <td ><button class="btn btn-sm btn-outline-success" type="button" @click="viewEvent(event.id)" ><i class="fa fa-fa fa-desktop" style="font-size:35px;"></i></button></td>
 
                       <td> <a href="#" @click="editModal(event)">
                            
@@ -275,9 +275,11 @@
                 this.form_2.fill(event);
             },
 
-           viewEvent(event){
-                
-                $('#viewevent').modal('show');
+           viewEvent(id){
+            this.$router.push('admin/event/'+id )
+            
+                //$('#viewevent').modal('show');
+
                 
             },
             updateProblem(){

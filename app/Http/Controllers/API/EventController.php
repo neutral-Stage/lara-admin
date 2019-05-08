@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Problem;
+use Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
@@ -61,7 +62,7 @@ class EventController extends Controller
      */
     public function show($id)
     {
-        //
+       
     }
 
     /**
@@ -86,4 +87,6 @@ class EventController extends Controller
     {
         //
     }
+
+    
 }
